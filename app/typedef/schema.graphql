@@ -1,0 +1,115 @@
+scalar MongoID
+
+enum Role{
+    CUSTOMER
+    ADMIN
+}
+enum PaymentStatus{
+    success
+    rejected
+    pending
+}
+
+type User{
+    name:String!
+    username:String!
+    id:MongoID!
+    email:String!
+    carts:[Cart!]
+    role:Role!
+}
+
+type Coin{
+    id:MongoID!
+    name:String!
+    rate:Float!
+    stock:Float!
+    short:String!
+}
+
+type ListOfCoin{
+    coin:Coin!
+    quantity:Float!
+}
+
+type Cart{
+    id:MongoID!
+    coins:[ListOfCoin!]!
+    paymentStatus:PaymentStatus
+}
+
+type Payment {
+    id:MongoID!
+    user:User!
+    cart:Cart!
+    amount:Float!,
+    status:String
+}
+
+type AuthPlayload{
+    token:String!
+    user:User!
+}
+
+type Query{
+    me:User!
+    coinList:[Coin!]!
+}
+
+input LoginUser{
+    username:String!
+    password:String!
+}
+
+input RegisterUser{
+    name:String!
+    email:String!
+    username:String!
+    password:String!
+    role:Role
+}
+
+input CreateCoin{
+    name:String!
+    rate:Float!
+    stock:Float!
+    short:String!
+}
+
+input DeleteCoin{
+    short:String
+    id:String
+}
+
+input CreateCart{
+    id:MongoID!
+    quantity:Float!
+}
+
+input UpdateCart{
+    id:MongoID!
+    updation:[CreateCart!]!
+}
+
+input AddCoinToCart{
+    id:MongoID!
+    addition:CreateCart!
+}
+
+type Mutation{
+    # User Mutations
+    login(input:LoginUser):AuthPlayload!
+    register(input:RegisterUser):AuthPlayload!
+
+    # Coin Mutations
+    createCoin(input:CreateCoin):Coin!
+    deleteCoin(input:DeleteCoin!):Boolean!
+
+    # Cart Mutation
+    createCart(input:[CreateCart!]!):Cart!
+    updateCart(input:UpdateCart):Cart!
+    addCoinToCart(input:AddCoinToCart):Cart!
+
+    # Payment Mution
+
+}
