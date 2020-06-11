@@ -1,5 +1,9 @@
-const { TradeTokenForUser } = require('../validator')
-const context = async ({ req }) => {
+const {PubSub} = require("apollo-server-express");
+const { TradeTokenForUser } = require('../validator');
+
+const pubsub = new PubSub();
+
+const context = async ({ req, res }) => {
     let authToken = null;
     let currentUser = null;
     try {
@@ -12,6 +16,9 @@ const context = async ({ req }) => {
     }
     return {
         currentUser,
+        req,
+        res,
+        pubsub
     }
 }
 

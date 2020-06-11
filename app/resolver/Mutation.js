@@ -10,10 +10,12 @@ const login = async (_, { input }) => {
     else throw new Error("Incomplete fields")
 }
 
-const register = async (_, { input }) => {
-    if (input.name && input.email && input.username && input.password)
+const register = async (_, { input }, { currentUser }) => {
+    if (input.role && input.role == "ADMIN" && currentUser)
         return User.createUser(input)
-    else return new Error("fields are missing")
+    else if (!input.role || input.role == "CUSTOMER")
+        return User.createUser(input)
+    else return new Error("Admins can only creat accounts with ADMIN role")
 }
 
 const createCoin = authenticate(validateRole("ADMIN")((_, { input }) => {
@@ -24,19 +26,19 @@ const deleteCoin = authenticate(validateRole("ADMIN")((_, { input }) => {
     return Coin.deleteCoin(input)
 }))
 
-const createCart = authenticate((_, { input },{currentUser}) => {
-    return Cart.createCart(input,currentUser)
+const createCart = authenticate((_, { input }, { currentUser }) => {
+    return Cart.createCart(input, currentUser)
 })
 
-const updateCart = authenticate((_,{input},{currentUser})=>{
-    return Cart.updateCart(input,currentUser)
+const updateCart = authenticate((_, { input }, { currentUser }) => {
+    return Cart.updateCart(input, currentUser)
 })
 
-const addCoinToCart = authenticate(async (_,{input},{currentUser})=>{
-    return Cart.addCoinToCart(input,currentUser)
+const addCoinToCart = authenticate(async (_, { input }, { currentUser }) => {
+    return Cart.addCoinToCart(input, currentUser)
 })
 
-const createPayment = authenticate(()=>{})
+const createPayment = authenticate(() => { })
 
 
 

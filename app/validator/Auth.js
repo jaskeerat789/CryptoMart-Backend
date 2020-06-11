@@ -14,16 +14,16 @@ const TradeTokenForUser = (token) => {
         .populate({
             path: 'carts',
             model: "Carts",
-            populate:{
-                path:"coins",
-                populate:{
-                    path:"coin",
-                    populate:"Coins"
+            populate: {
+                path: "coins",
+                populate: {
+                    path: "coin",
+                    populate: "Coins"
                 }
             }
         })
         .exec()
-        .then(user =>user)
+        .then(user => user)
         .catch(err => console.log(err))
 }
 

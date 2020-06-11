@@ -98,8 +98,8 @@ input AddCoinToCart{
 
 type Mutation{
     # User Mutations
-    login(input:LoginUser):AuthPlayload!
-    register(input:RegisterUser):AuthPlayload!
+    login(input:LoginUser!):AuthPlayload!
+    register(input:RegisterUser!):AuthPlayload!
 
     # Coin Mutations
     createCoin(input:CreateCoin):Coin!
