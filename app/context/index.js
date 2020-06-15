@@ -12,7 +12,7 @@ const context = async ({ req, res }) => {
             }
         }
     } catch (error) {
-        debug.log("error in authentication")
+        debug.warn("error in authentication")
     }
     return {
         currentUser,

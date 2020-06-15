@@ -30,4 +30,7 @@ debug.error = function (string) {
   console.log(chalk.bgRed("ERROR:"), chalk.red(string));
 }
 
+debug.warn = (message)=>{
+  console.log(chalk.bgYellow.black("WARNING:"),chalk.gray(message))
+}
 module.exports = debug;
