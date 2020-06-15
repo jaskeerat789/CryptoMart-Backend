@@ -1,5 +1,6 @@
 const chalk = require('chalk');
 const log = console.log
+const figlet = require('figlet');
 var debug = {
 
 }
@@ -30,7 +31,16 @@ debug.error = function (string) {
   console.log(chalk.bgRed("ERROR:"), chalk.red(string));
 }
 
-debug.warn = (message)=>{
-  console.log(chalk.bgYellow.black("WARNING:"),chalk.gray(message))
+debug.warn = (message) => {
+  console.log(chalk.bgYellow.black("WARNING:"), chalk.gray(message))
+}
+
+debug.welcome = () => {
+  console.log(chalk.green.bold(
+    figlet.textSync("CryptoMart", {
+      font: 'Epic',
+      horizontalLayout: 'default',
+      verticalLayout: 'default',
+    })))
 }
 module.exports = debug;

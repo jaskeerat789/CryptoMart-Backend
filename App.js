@@ -1,4 +1,6 @@
 require('dotenv').config()
+const debug = require('./app/log');
+debug.welcome()
 const express = require('express');
 const grapqlPlayground = require('graphql-playground-middleware-express').default;
 const db = require('./app/database')
@@ -6,14 +8,12 @@ const { ApolloServer } = require('apollo-server-express');
 const { createServer } = require('http');
 const { readFileSync } = require('fs');
 const { init, updatePrice } = require('./app/util/CoinPriceUpdate')
-const debug = require('./app/log')
 
 const typeDefs = readFileSync('./app/typedef/schema.graphql', 'utf-8');
 const resolvers = require('./app/resolver');
 const context = require('./app/context');
-
-
 db.connectToDB.then(() => {
+   
     debug.logSection("Starting Server")
     init()
     const app = express();
