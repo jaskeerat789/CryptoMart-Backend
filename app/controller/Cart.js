@@ -3,6 +3,7 @@ const Coins = require('../model/Coin')
 const User = require('../model/User')
 const lodash = require('lodash')
 const { ObjectId } = require('mongoose').Types
+const debug = require('../log')
 
 const merge = (orders, listOfCoin) => {
     let arr = [];
@@ -46,7 +47,7 @@ const createCart = (cart, currentUser) => {
                                 }
                             })
                     )
-                    .catch(err => console.log(err))
+                    .catch(err => debug.error(err))
             }
             else throw new Error("Coins not found")
         })
@@ -76,7 +77,7 @@ const updateCart = (requestedOrder, currentUser) => {
                         })
                         .exec()
                         .then(updatedCart => {
-                            console.log(updatedCart)
+                            debug.message(updatedCart)
                             return {
                                 id: updatedCart._id,
                                 ...updatedCart._doc
@@ -85,11 +86,11 @@ const updateCart = (requestedOrder, currentUser) => {
                         .catch(err => { throw new Error(err) })
                 }
                 else {
-                    console.log("Not Authorised")
+                    debug.error("Not Authorised")
                     return new Error("Not Authorised")
                 }
             else {
-                console.log("Worng Cart Id")
+                debug.error("Worng Cart Id")
                 return new Error("Worng Cart Id")
             }
         })

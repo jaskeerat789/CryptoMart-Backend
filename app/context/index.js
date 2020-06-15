@@ -1,24 +1,23 @@
-const {PubSub} = require("apollo-server-express");
 const { TradeTokenForUser } = require('../validator');
-
-const pubsub = new PubSub();
+const debug = require('../log')
 
 const context = async ({ req, res }) => {
     let authToken = null;
     let currentUser = null;
     try {
-        authToken = req.headers.authentication;
-        if (authToken) {
-            currentUser = await TradeTokenForUser(authToken);
+        if (typeof req.headers !== 'undefined') {
+            authToken = req.headers.authentication;
+            if (authToken) {
+                currentUser = await TradeTokenForUser(authToken);
+            }
         }
     } catch (error) {
-        console.log(error)
+        debug.log("error in authentication")
     }
     return {
         currentUser,
         req,
         res,
-        pubsub
     }
 }
 

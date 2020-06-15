@@ -25,6 +25,7 @@ type Coin{
     rate:Float!
     stock:Float!
     short:String!
+    url:[String!]
 }
 
 type ListOfCoin{
@@ -112,4 +113,8 @@ type Mutation{
 
     # Payment Mution
 
+}
+
+type Subscription{
+    CoinUpdated:[Coin!]!
 }

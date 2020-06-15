@@ -4,11 +4,13 @@ const URL = process.env.DEVELOPMENT_URL;
 const Users = require('../model/User');
 const salt = parseInt(process.env.SALT_ROUNDS)
 const bcrypt = require('bcryptjs')
+const debug = require('../log')
+
 const connectToDB = new  Promise((resolve,reject)=>{
-    console.log("Connecting to Database ...");
+    debug.logSection("Connecting to Database ...");
     mongoose.connect(URL,config)
     .then(()=>{
-        console.log("Connected")
+        debug.message("Connected")
         Users.find({username:"admin"}).exec()
         .then(adminUser=>{
             if(adminUser.length==0)
@@ -29,11 +31,11 @@ const connectToDB = new  Promise((resolve,reject)=>{
                 resolve()
             else reject("Please Clean Database, more than one root Admin exists")
         })
-        .catch(err=>console.log(err))
+        .catch(err=>debug.error(err))
     })
     .catch(err=>{
-        console.log(err);
-        console.log("Failed to connect to MongoDB");
+        debug.error(err);
+        debug.error("Failed to connect to MongoDB");
         process.exit(1);
     })
 })

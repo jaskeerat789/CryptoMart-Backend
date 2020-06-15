@@ -1,5 +1,6 @@
 const { authenticate, validateRole } = require("../validator/Auth")
 const Coin = require("../controller/Coin")
+const debug = require('../log');
 
 const coinList = () => {
     return Coin.getAllCoins()
@@ -12,7 +13,7 @@ const coinList = () => {
 }
 
 const me = authenticate((_,__,{currentUser})=>{
-    console.log(currentUser)
+    debug.message(currentUser)
     return currentUser
 })
 

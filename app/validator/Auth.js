@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../model/User')
+const debug = require('../log')
 
 const authenticate = next => (root, args, context, info) => {
     if (!context.currentUser) {
@@ -24,7 +25,7 @@ const TradeTokenForUser = (token) => {
         })
         .exec()
         .then(user => user)
-        .catch(err => console.log(err))
+        .catch(err => debug.error(err))
 }
 
 const validateRole = role => next => (root, args, context, info) => {

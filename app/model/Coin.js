@@ -21,14 +21,15 @@ const CoinSchema = new mongoose.Schema(
         },
         rate: {
             type: Number,
-            required: true,
+            default:0,
             min: [0, "rate can't be negative"]
         },
         stock: {
             type: Number,
-            required: true,
+            default:0,
             min: [0, "Stock can't be negative"]
-        }
+        },
+        url:[String]
     },
     {
         timestamps: {
