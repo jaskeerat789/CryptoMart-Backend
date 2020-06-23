@@ -16,11 +16,12 @@
     "lodash": "^4.17.15",
     "mongoose": "^5.9.18",
     "node-fetch": "^2.6.0",
+    "subscriptions-transport-ws": "^0.9.16",
     "uuid": "^8.1.0",
     "winston": "^3.2.1"
   },
   "scripts": {
     "start": "node App.js",
-    "dev":"nodemon App.js"
+    "dev": "nodemon App.js"
   }
 }

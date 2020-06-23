@@ -38,7 +38,7 @@ db.connectToDB.then(() => {
     app.get('/playground', grapqlPlayground({ endpoint: '/graphql' }));
 
     httpServer.timeout = 5000;
-    httpServer.listen({ port: process.env.PORT }, () => {
+    httpServer.listen(process.env.PORT ,"0.0.0.0", () => {
         debug.message(`🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`)
         debug.message(`🚀 Subscriptions ready at ws://localhost:${process.env.PORT}${server.subscriptionsPath}`)
         debug.logSection("Fetching Rate Updates")
