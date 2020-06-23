@@ -27,6 +27,9 @@ db.connectToDB.then(() => {
             onConnect: () => debug.log('Connected to websocket'),
         },
         tracing: true,
+        introspection:true,
+        playground:true
+
     })
     server.applyMiddleware({ app });
     server.installSubscriptionHandlers(httpServer)
