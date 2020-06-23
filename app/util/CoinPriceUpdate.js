@@ -37,7 +37,7 @@ const updatePrice = async()=>{
         let data = await getData()
         COINS.forEach(element => {
             coin=data[element.apiname]
-            debug.message(coin.sell)
+            // debug.message(coin.sell)
             Coins.findOneAndUpdate({short:element.short},{$set:{rate:coin.sell}}).exec()
             .then(updatedCoin=>{
                 // console.log(updatedCoin)
