@@ -58,9 +58,14 @@ type AuthPlayload{
     user:User!
 }
 
+input CartID{
+    id:MongoID!
+}
+
 type Query{
     me:User!
     coinList:[Coin!]!
+    cart(input:CartID!):Cart
 }
 
 input LoginUser{

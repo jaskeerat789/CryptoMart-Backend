@@ -1,5 +1,6 @@
 const { authenticate, validateRole } = require("../validator/Auth")
 const Coin = require("../controller/Coin")
+const Cart = require('../controller/Cart')
 const debug = require('../log');
 
 const coinList = () => {
@@ -13,11 +14,16 @@ const coinList = () => {
 }
 
 const me = authenticate((_,__,{currentUser})=>{
-    debug.message(currentUser)
+    // debug.message(currentUser)
     return currentUser
+})
+
+const cart = authenticate((_,{input},{currentUser})=>{
+    return Cart.getACart(input,currentUser)
 })
 
 module.exports = {
     coinList,
-    me
+    me,
+    cart
 }

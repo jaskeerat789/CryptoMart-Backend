@@ -4,6 +4,7 @@ const User = require('../model/User')
 const lodash = require('lodash')
 const { ObjectId } = require('mongoose').Types
 const debug = require('../log')
+const { populate } = require('../model/User')
 
 const merge = (orders, listOfCoin) => {
     let arr = [];
@@ -97,7 +98,7 @@ const updateCart = (requestedOrder, currentUser) => {
         .catch(err => new Error(err))
 }
 const addCoinToCart = (requestedAddition, currentUser) => {
-    requestedAddition={...requestedAddition,addition:{coin:requestedAddition.addition.id,quantity:requestedAddition.addition.quantity}}
+    requestedAddition = { ...requestedAddition, addition: { coin: requestedAddition.addition.id, quantity: requestedAddition.addition.quantity } }
     return Carts.findById(requestedAddition.id).exec()
         .then(currentCart => {
             if (currentCart) {
@@ -137,9 +138,30 @@ const addCoinToCart = (requestedAddition, currentUser) => {
         .catch(err => new Error(err))
 
 }
+const getACart = ({ id }, currentUser) => {
+    return Carts.findById(id)
+        .populate({
+            path: "coins",
+            populate: {
+                path: "coin",
+                populate: "Coins"
+            }
+        })
+        .exec()
+        .then(res => {
+            console.log(res)
+            console.log(currentUser)
+            if (String(res.userId) === String(currentUser._id)) {
+                return res
+            }
+            else throw new Error("Cart Does not Belongs to the current user")
+        })
+        .catch(err => err)
+}
 
 module.exports = {
     createCart,
     updateCart,
-    addCoinToCart
+    addCoinToCart,
+    getACart
 }
