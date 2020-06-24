@@ -1,6 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 const checksum = require("../util/checksum/checksum")
-const User = require('../model/User')
+const fetch = require('node-fetch');
 
 
 const createPayload = async (input, currentuser) => {
@@ -18,14 +18,38 @@ const createPayload = async (input, currentuser) => {
             EMAIL: currentuser.email
         }
         const checksumValue = await checksum.genchecksum(paylaod, process.env.PAYTM_MK)
-        paylaod["CHECKSUMHASH"]=checksumValue
+        paylaod["CHECKSUMHASH"] = checksumValue
         return paylaod
     }
-    catch(error){
+    catch (error) {
         console.log(error)
     }
 }
 
+const callback = (req, res, next) => {
+    const response = req.body;
+    const checksumhash = response.CHECKSUMHASH
+    delete response.CHECKSUMHASH
+    var valid=checksum.verifychecksum(response,process.env.PAYTM_MK,checksumhash)
+    const paytmParam = {
+        MID:response.MID,
+        ORDERID:response.ORDERID,
+        CHECKSUMHASH:checksumhash,
+    }
+    fetch(`${process.env.API_URL}`,{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json",
+            "Content-Length":JSON.stringify(paytmParam).length
+        },
+        body:JSON.stringify(paytmParam)
+    })
+    .then(response=>response.json())
+    .then(json=> console.log(json))
+    res.redirect(process.env.APP_URL,302)
+}
+
 module.exports = {
-    createPayload
+    createPayload,
+    callback
 } 

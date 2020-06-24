@@ -1,0 +1,29 @@
+<html>
+   <head>
+      <title>Merchant Check Out Page</title>
+   </head>
+   <body>
+      <center>
+         <h1>Please do not refresh this page...</h1>
+      </center>
+      <form method="post" action="https://securegw-stage.paytm.in/order/process" name="paytm">
+         <table border="1">
+            <tbody>
+               <input type="hidden" name="MID" value="iiXPqi75007415739443">
+               <input type="hidden" name="WEBSITE" value="WEBSTAGING">
+               <input type="hidden" name="ORDER_ID" value="b9f97db4-5ae9-4d36-9807-2721affe48e3">
+               <input type="hidden" name="CUST_ID" value="5ef2e09196b9ec45e8eb660b">
+               <input type="hidden" name="EMAIL" value="jaskeerat@gmail.com">
+               <input type="hidden" name="INDUSTRY_TYPE_ID" value="Retail">
+               <input type="hidden" name="CHANNEL_ID" value="WAP">
+               <input type="hidden" name="TXN_AMOUNT" value="125.50">
+               <input type="hidden" name="CALLBACK_URL" value="http://localhost:5000/paytm">
+               <input type="hidden" name="CHECKSUMHASH" value="Ts5US4m9pA8qIwWDgSYmduEj1oBy+iM9nW1qv7GVlqn8tSRU2CCm4qXBqNK19rPkS4FqQE15F5SIS6flTgzLcbZveTlJI6r0FZp0XEKh5V8=">
+            </tbody>
+         </table>
+         <script type="text/javascript">
+            document.paytm.submit();
+         </script>
+      </form>
+   </body>
+</html>

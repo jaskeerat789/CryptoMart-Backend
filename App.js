@@ -2,12 +2,15 @@ require('dotenv').config()
 const debug = require('./app/log');
 debug.welcome()
 const express = require('express');
+const bodyParser = require("body-parser");
+const cors = require("cors");
 const grapqlPlayground = require('graphql-playground-middleware-express').default;
 const db = require('./app/database')
 const { ApolloServer } = require('apollo-server-express');
 const { createServer } = require('http');
 const { readFileSync } = require('fs');
 const { init, updatePrice } = require('./app/util/CoinPriceUpdate')
+const payment = require('./app/controller/Payment')
 
 const typeDefs = readFileSync('./app/typedef/schema.graphql', 'utf-8');
 const resolvers = require('./app/resolver');
@@ -31,11 +34,18 @@ db.connectToDB.then(() => {
         playground:true
 
     })
+    app.use(cors());
+    app.use(
+        "/paytm",
+        bodyParser.urlencoded({ extended: true }),
+        bodyParser.json(),
+    );
     server.applyMiddleware({ app });
     server.installSubscriptionHandlers(httpServer)
 
     app.get('/', (req, res) => res.send("Welcome to Graphql Server"));
     app.get('/playground', grapqlPlayground({ endpoint: '/graphql' }));
+    app.post('/paytm',payment.callback)
 
     httpServer.timeout = 5000;
     httpServer.listen(process.env.PORT ,"0.0.0.0", () => {
