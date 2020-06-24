@@ -2,7 +2,7 @@ const { authenticate, validateRole } = require("../validator/Auth")
 const User = require("../controller/User")
 const Coin = require("../controller/Coin")
 const Cart = require('../controller/Cart')
-
+const Payment = require('../controller/Payment')
 
 const login = async (_, { input }) => {
     const { username, password } = input;
@@ -38,8 +38,9 @@ const addCoinToCart = authenticate(async (_, { input }, { currentUser }) => {
     return Cart.addCoinToCart(input, currentUser)
 })
 
-const createPayment = authenticate(() => { })
-
+const createPayment = authenticate((_, { input }, { currentUser }) => {
+    return Payment.createPayload(input,currentUser)
+ })
 
 
 module.exports = {
@@ -49,5 +50,6 @@ module.exports = {
     deleteCoin,
     createCart,
     updateCart,
-    addCoinToCart
+    addCoinToCart,
+    createPayment
 }

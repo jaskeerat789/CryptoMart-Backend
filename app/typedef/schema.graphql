@@ -40,11 +40,17 @@ type Cart{
 }
 
 type Payment {
-    id:MongoID!
-    user:User!
-    cart:Cart!
-    amount:Float!,
-    status:String
+    MID:String!
+    ORDER_ID:String!
+    CUST_ID:MongoID!
+    TXN_AMOUNT:String!
+    CHANNEL_ID:String!
+    WEBSITE:String!
+    CHECKSUMHASH:String!
+    EMAIL:String!
+    INDUSTRY_TYPE_ID:String!
+    CALLBACK_URL:String!
+
 }
 
 type AuthPlayload{
@@ -97,6 +103,11 @@ input AddCoinToCart{
     addition:CreateCart!
 }
 
+input PaymentPayload{
+    orderId:String!
+    amount:String!
+}
+
 type Mutation{
     # User Mutations
     login(input:LoginUser!):AuthPlayload!
@@ -112,6 +123,7 @@ type Mutation{
     addCoinToCart(input:AddCoinToCart):Cart!
 
     # Payment Mution
+    createPayment(input:PaymentPayload!):Payment!
 
 }
 
