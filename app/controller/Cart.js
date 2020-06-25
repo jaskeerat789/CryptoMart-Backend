@@ -149,8 +149,6 @@ const getACart = ({ id }, currentUser) => {
         })
         .exec()
         .then(res => {
-            console.log(res)
-            console.log(currentUser)
             if (String(res.userId) === String(currentUser._id)) {
                 return res
             }
