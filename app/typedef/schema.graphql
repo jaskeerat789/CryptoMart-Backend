@@ -31,6 +31,7 @@ type Coin{
 type ListOfCoin{
     coin:Coin!
     quantity:Float!
+    amount:Float!
 }
 
 type Cart{
@@ -95,7 +96,7 @@ input DeleteCoin{
 
 input CreateCart{
     id:MongoID!
-    quantity:Float!
+    amount:Float!
 }
 
 input UpdateCart{

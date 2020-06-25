@@ -13,7 +13,8 @@ const merge = (orders, listOfCoin) => {
             if (order.id == ObjectId(coin._id)) {
                 arr.push({
                     coin,
-                    quantity: order.quantity
+                    amount: order.amount,
+                    quantity: order.amount / coin.rate
                 })
             }
         });
@@ -29,10 +30,11 @@ const createCart = (cart, currentUser) => {
         .exec()
         .then(listOfCoin => {
             if (listOfCoin.length > 0) {
+                // console.log(listOfCoin,cart)
                 const ListOfCoin = merge(cart, listOfCoin)
                 const newCart = new Carts({
                     _id: ObjectId(),
-                    coins: ListOfCoin.map(({ coin, quantity }) => { return { coin: coin._id, quantity } }),
+                    coins: ListOfCoin.map(({ coin, quantity, amount }) => { return { coin: coin._id, quantity, amount } }),
                     userId: currentUser._id
                 })
                 return newCart.save()
