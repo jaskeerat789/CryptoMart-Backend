@@ -5,8 +5,8 @@ const Cart = require('../controller/Cart')
 const Payment = require('../controller/Payment')
 
 const login = async (_, { input }) => {
-    const { username, password } = input;
-    if (username && password) return User.findUser(username, password)
+    const { number,token } = input;
+    if (number && token) return User.findUser(number,token)
     else throw new Error("Incomplete fields")
 }
 
@@ -39,8 +39,8 @@ const addCoinToCart = authenticate(async (_, { input }, { currentUser }) => {
 })
 
 const createPayment = authenticate((_, { input }, { currentUser }) => {
-    return Payment.createPayload(input,currentUser)
- })
+    return Payment.createPayload(input, currentUser)
+})
 
 
 module.exports = {

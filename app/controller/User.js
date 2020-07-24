@@ -2,41 +2,52 @@ const Users = require('../model/User');
 const bcrypt = require('bcryptjs')
 const { ObjectId } = require('mongoose').Types
 const { GenerateToken, authenticate, validateRole } = require("../validator/Auth")
-
-const findUser = (username, password) => {
-    return Users.find({ username }).exec()
+const { verifyToken } = require('../util/firebase');
+const findUser = (number, firebaseToken) => {
+    return Users.find({ number }).exec()
         .then((searchedUser) => {
             if (searchedUser.length === 1) {
-                if (bcrypt.compareSync(password, searchedUser[0].password))
-                    return {
-                        token: GenerateToken({ username, id: searchedUser[0]._id }),
-                        user: { ...searchedUser[0]._doc, id: searchedUser[0]._id }
-                    }
-                else {
-                    throw new Error("Wrong Username and password")
-                }
+                return verifyToken(firebaseToken, number)
+                    .then(() => {
+                        return {
+                            token: GenerateToken({ number, id: searchedUser[0]._id }),
+                            user: { ...searchedUser[0]._doc, id: searchedUser[0]._id }
+                        }
+                    })
+                    .catch((err) => {
+                        if (err.status === "NOT_VERIFIED")
+                            throw new Error("User not Authenticated")
+                        else throw new Error("Unable to verify user")
+                    })
             }
-            else if (searchedUser.length === 0) throw new Error("Wrong Username and password")
+            else if (searchedUser.length === 0) return createUser(number,firebaseToken)
             else throw new Error("Multiple USers found")
         })
         .catch(err => new Error(err))
 }
 
-const createUser = (user) => {
-    const salt = parseInt(process.env.SALT_ROUNDS)
-    const newuser = new Users({
-        ...user,
-        _id: ObjectId(),
-        password:bcrypt.hashSync(user.password,salt),
-    })
-    return newuser.save()
-        .then(createdUser => {
-            return {
-                token: GenerateToken({ id: createdUser._id, username: createdUser.username }),
-                user: createdUser
-            }
+const createUser = (number, firebaseToken) => {
+    // const salt = parseInt(process.env.SALT_ROUNDS)
+    return verifyToken(firebaseToken, number)
+        .then(res => {
+            const newuser = new Users({
+                number,
+                _id: ObjectId(),
+            })
+            return newuser.save()
+                .then(createdUser => {
+                    return {
+                        token: GenerateToken({ id: createdUser._id, number: createdUser.number }),
+                        user: createdUser
+                    }
+                })
+                .catch(err => { throw new Error(err) })
         })
-        .catch(err => { throw new Error(err) })
+        .catch(err => {
+            if (err.status === "NOT_VERIFIED")
+                throw new Error("User not Authenticated")
+            else throw new Error("Unable to verify user")
+        })
 }
 
 module.exports = {

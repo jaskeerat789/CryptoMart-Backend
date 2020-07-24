@@ -11,16 +11,17 @@ const connectToDB = new  Promise((resolve,reject)=>{
     mongoose.connect(URL,config)
     .then(()=>{
         debug.message("Connected")
-        Users.find({username:"admin"}).exec()
+        Users.find({number:"+9100000000"}).exec()
         .then(adminUser=>{
             if(adminUser.length==0)
             {
                 const initAdmin = new Users({
                     _id:mongoose.Types.ObjectId(),
-                    username:'admin',
-                    name:"Admin",
-                    email:"admin@admin.com",
-                    password:bcrypt.hashSync("admin123",salt),
+                    // username:'admin',
+                    // name:"Admin",
+                    // email:"admin@admin.com",
+                    // password:bcrypt.hashSync("admin123",salt),
+                    number:"+9100000000",
                     role:"ADMIN"
                 })
                 initAdmin.save()

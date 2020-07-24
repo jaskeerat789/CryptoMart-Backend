@@ -7,17 +7,7 @@ const UserSchema = new mongoose.Schema(
             type: ObjectId,
             required: true,
         },
-        username: {
-            type: String,
-            required: true,
-            unique: true,
-            index: true,
-        },
-        name: {
-            type: String,
-            required: true,
-        },
-        email: {
+        number: {
             type: String,
             required: true,
             unique: true,
@@ -26,10 +16,6 @@ const UserSchema = new mongoose.Schema(
             type: String,
             enum: ["CUSTOMER", "ADMIN"],
             default: "CUSTOMER",
-        },
-        password: {
-            type: String,
-            required: true,
         },
         carts: [{
             type: ObjectId,

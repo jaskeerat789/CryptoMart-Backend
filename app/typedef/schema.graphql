@@ -11,10 +11,8 @@ enum PaymentStatus{
 }
 
 type User{
-    name:String!
-    username:String!
     id:MongoID!
-    email:String!
+    phone:String!
     carts:[Cart!]
     role:Role!
 }
@@ -70,15 +68,12 @@ type Query{
 }
 
 input LoginUser{
-    username:String!
-    password:String!
+    number:String!
+    token:String!
 }
 
 input RegisterUser{
-    name:String!
-    email:String!
-    username:String!
-    password:String!
+    number:String!
     role:Role
 }
 
