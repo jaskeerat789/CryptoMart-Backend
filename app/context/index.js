@@ -9,6 +9,7 @@ const context = async ({ req, res }) => {
             authToken = req.headers.authentication;
             if (authToken) {
                 currentUser = await TradeTokenForUser(authToken);
+                console.log(currentUser)
             }
         }
     } catch (error) {

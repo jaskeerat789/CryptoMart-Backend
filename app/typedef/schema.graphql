@@ -12,7 +12,7 @@ enum PaymentStatus{
 
 type User{
     id:MongoID!
-    phone:String!
+    number:String!
     carts:[Cart!]
     role:Role!
 }
